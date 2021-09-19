@@ -153,9 +153,18 @@ def save_as_sif(adjacency_dict, interaction, outname, path="."):
                 result = "{} {} {} {}\n".format(locus, interaction, gene, score)
                 outfile.write(result)
 
+def parse_input(input_file):
+    locus_genes = defaultdict(None)
+    with open(input_file, 'r') as infile:
+        lines = infile.readlines()
+        for line in lines:
+            data = line.split("\t")
+            locus = data[1].split()[-1]
+            genes = data[2:]
+            locus_genes[locus] = genes
 
-def parse_input(input_file: str) -> list:
-    """ parses input file """
+    return locus_genes
+
 
 if __name__ == "__main__":
 
@@ -178,5 +187,5 @@ if __name__ == "__main__":
     string_db = StringDB(args.database)
 
     # collecting 
-
+    print(parsed_input)
     
