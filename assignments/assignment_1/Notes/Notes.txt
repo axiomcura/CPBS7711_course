@@ -1,0 +1,7 @@
+#----------
+# 09/19/21
+#----------
+- weird behavior coming form he look at table. I am getting not results. out of all the pairs in the pairs
+  in the lock up dataframe, it retuns nothing for each locus. 
+
+- Going to attempt using dictionaries since they are much easier to read and debugg
