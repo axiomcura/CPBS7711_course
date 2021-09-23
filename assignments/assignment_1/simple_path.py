@@ -34,8 +34,23 @@ class StringDB:
         """ Parses the STRING.txt file and converts it into a dictionary
 
         Arguments
+        fname : str
+            path to STRING.txt file
 
+        Returns
+        -------
+        dict
+            dictionary containing protein pairs as key and scores as its value
+
+        # Example:
+        >>> results = {"PROT1 PROT2" : score, ...}
         """
+
+        # Reads the STRING.txt file and iterates over all lines
+        # each line is split into two parts
+        # -= protein pairs (key)
+        # -- score (value)
+        # then stored into dictionary
         db_contents = defaultdict(lambda: None)
         with open(fname, "r") as infile:
             record_contents = infile.readlines()
@@ -87,9 +102,6 @@ class StringDB:
         """
 
         # type checking
-        known_interaction_types = ["pp", "pd", "pr", "rc", "cr", "gl", "pm", "mp"]
-        if interaction_type not in known_interaction_types:
-            raise ValueError("'{}' is an unsupported interaction type. Supported interaction: {}".format(interaction_type, ", ".join(known_interaction_types)))
         if not isinstance(proteins, list):
             genes = [proteins]
 
@@ -199,7 +211,7 @@ def save_as_sif(data : dict, out_dir="Simple_out") -> None:
     None
         Writes SIF files
     """
-
+    # NOTE: add comment here 
     unique_id = datetime.today().strftime("%m%d%y-%H%M%S")
     for locus_name, interactions in data.items():
         outname = "{}-{}.sif".format(locus_name, unique_id)
@@ -208,6 +220,8 @@ def save_as_sif(data : dict, out_dir="Simple_out") -> None:
             for interaction in interactions:
                 sifile.write("{}\n".format(interaction))
 
+    # NOTE: add comment here how this is different from 
+    # here the results are flatten and generates a single SIF file
     interactions_flatten = _flatten_data(data)
     global_outname = "all_nodes-{}.sif".format(unique_id)
     with open(global_outname, "w") as globalout:
@@ -216,7 +230,8 @@ def save_as_sif(data : dict, out_dir="Simple_out") -> None:
             globalout.write("{}\n".format(interaction))
 
 
-    # storing SIF files into directory
+    # storing SIF files into directory in the format of
+    # "outname-uniqueID"
     dir_name = "{}_{}".format(out_dir, unique_id)
     os.mkdir(dir_name)
     all_sifs = glob.glob("./*-{}.sif".format(unique_id))
@@ -228,13 +243,15 @@ def save_as_sif(data : dict, out_dir="Simple_out") -> None:
 if __name__ == "__main__":
 
     # CLI arguments
-    description = "No description specified"
+    description = "simple program for generating SIF to full understand relationships between biological processes."
     parser = argparse.ArgumentParser(description=description)
-    parser.add_argument("-i", "--input", type=str, metavar="INPUT",
+    required = parser.add_argument_group("Required Arguments")
+    required.add_argument("-i", "--input", type=str, metavar="INPUT",
                         help="input file")
     parser.add_argument("-o", "--output", type=str, required=False, default="Simple_out",
                         metavar="PARAMETER", help="name of the outfile default='Simple_out'")
-    parser.add_argument("-t", "--interaction_type", type=str, metavar="PARAMETER",
+    required.add_argument("-t", "--interaction_type", type=str, metavar="PARAMETER",
+                        choices=["pp", "pd", "pr", "rc", "cr", "gl", "pm", "mp"],
                         help="Interaction type")
     parser.add_argument('-db', "--database", type=str, metavar="FILE",
                         help="path to database. Default path is `./Data/STRING.txt",
