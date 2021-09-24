@@ -1,0 +1,82 @@
+# constructing StringDB object 
+StringDB object ( filepath_to_STRING.txt)
+	function _internal_parser(file_path_to_STRING.txt):
+		db_contents = initializing hashmap/dictioanry
+		contents = read file lines
+		for content_line in contents:
+				data = remove new lines and delimit by tabs on content_line
+				protein_pair = first two elements of data
+				score = last element of data
+				store to hashmap/dictioanry protein_pair as key and score as key
+		return db_contents
+
+	function get_pair_score(locus_name, protein_array, interaction_type):
+		pairs = perumations of the array with as ize of two
+		results = initialize array
+		searched = initialize array
+		for prot1, prot2 in pairs:
+			query = "prot1 prot2"
+				query_rev = "prot2 prot1"
+				score = submit query to database
+				if score = None
+						back to top of the loop
+				if query_rev is in searched:
+						back to top of the loop
+				store result in results
+				store query into searched
+		return results
+
+
+#  These are fromating and io functions
+function parse_input(path_to_inputfile):
+	locus_genes = initialize hashmap/dictioanry
+	lines = open file and read lines
+	for line in lines:
+		data = remove new lines and delimit by tabs on line
+		locus = first element of data -> delimit by space and -> last element
+		genes = all elements of data starting from the second index
+		store locus as key and genes as value
+
+
+function _flatten(genes_arrays)
+	flatten_array = initialize array
+	for genes_array in genes_arrays:
+		concatenate genes_array to flatten_array
+
+
+function save_as_sif(data_hash_map):
+	unique_id = generate a unique_id
+
+	for locus_name, interactions in data_hash_map:
+		outname = string "outname-unique_id.sif"
+		outfile = create file with outname with write
+		for interaction in interactions:
+			write interaction to outfile
+
+	flattent_interaction = _flatten_data(data_hash_map)
+	outname2 = generated outname-unique_id
+
+
+#----------
+# Main code below
+#----------
+
+# user defined arguments
+# -- args.name indicates user specified inputs 
+args.input = path to inputfile
+args.output = output name
+args.interaction_type = type of interaction 
+args.db = path to database 
+
+# parsing input and creating StringDB object
+parsed_input = parse_input(args.input)
+db = StringDB(args.database)
+
+# collecting all data 
+results = initialize a hashmap/dictioanry
+for locus_name, gene_list in parsed_input:
+	result = use db method get_pair_score(locus_name, gene_list, interaction_type=args.interaction)
+	store data in results hashmap locus_name as key and result as value
+
+# writting out fules
+save_as_sif(results, args.output)

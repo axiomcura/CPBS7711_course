@@ -268,7 +268,7 @@ if __name__ == "__main__":
 
         # each genes list within the parsed data will be send to the database
         # -- scores will be recorded into a dictioanry along with locus name
-        result = db.get_pair_score(locus_name, gene_list, interaction_type="pp")
+        result = db.get_pair_score(locus_name, gene_list, interaction_type=args.interaction_type)
         results[locus_name] = result
 
     # saving results into SIF files
