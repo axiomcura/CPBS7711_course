@@ -5,6 +5,7 @@ import argparse
 from datetime import datetime
 from collections import defaultdict
 from itertools import permutations
+import pandas as pd
 
 #--------------------
 # Classes
@@ -27,6 +28,7 @@ class StringDB:
     def __init__(self, fname):
         db = self._parse_string_db(fname)
         self._db = db
+        self.fname = fname
         self.size = "{} MB".format(round(sys.getsizeof(db)/1024**2, 4))
 
 
@@ -60,6 +62,10 @@ class StringDB:
                 score = data[2]
                 db_contents[protein_pair] = score
         return db_contents
+
+    def to_pandas(self) -> pd.DataFrame:
+        """ Converts the StringDB object into a pandas object"""
+        return pd.read_csv(self.fname, delimiter="\t") 
 
 
     def get_pair_score(self, locus_name: str, proteins: list, interaction_type="pp") -> list:
@@ -124,6 +130,7 @@ class StringDB:
             results.append(result)
             searched.append(query)
         return results
+
 
 
 #--------------------
@@ -236,7 +243,6 @@ def save_as_sif(data : dict, out_dir="Simple_out") -> None:
     os.mkdir(dir_name)
     all_sifs = glob.glob("./*-{}.sif".format(unique_id))
     cmd = "mv {} {}".format(" ".join(all_sifs), dir_name)
-    print(cmd)
     os.system(cmd)
 
 
