@@ -1,5 +1,5 @@
 # Table of Contents
-[Net_sim.py ](#netsimpy)\
+[sample_net.py ](#netsimpy)\
 [Dependencies ](#dependencies)\
  [Using pip](#using-pip)\
  [Using conda](#using-conda)\
@@ -15,7 +15,7 @@
 ---
 # sample_net.py 
 
-net_sim.py is a light weight script that generates random subnetworks
+sample_net.py is a light weight script that generates random subnetworks
 from a given `.gmt` file that contains a tab delimited file format of
 gene sets. It samples randomly generated subnetwork, where it contains
 one gene per locus, and compares it to the larger gene network contained
@@ -61,10 +61,10 @@ for both package managers:
 ## Arguments 
 
 To have open the help documentation is accessed by typing
-`python net_sim.py -h`
+`python sample_net.py -h`
 
 ``` {.markdown}
-usage: net_sim.py [-h] [-i INPUT] [-db FILE] [-s PARAM] [-x PARAM] [--n_test PARAM]
+usage: sample_net.py [-h] [-i INPUT] [-db FILE] [-s PARAM] [-x PARAM] [--n_test PARAM]
 
 Simple program that creates random subnetworks and is compared to STRING database network
 
@@ -85,7 +85,7 @@ Required Arguments:
 
 ## Required Inputs 
 
-`net_sim.py` requires the user to have a database and an input file In
+`sample_net.py` requires the user to have a database and an input file In
 `.gmt` format. These two files will be responsible for generating the
 sub networks.
 
@@ -148,17 +148,17 @@ score.
 
 ## Commands 
 
-To execute this `net_sim.py`, enter:
+To execute this `sample_net.py`, enter:
 
 ``` {.}
-python net_sim.py -i ./Data/Input.gmt.txt
+python sample_net.py -i ./Data/Input.gmt.txt
 ```
 
 If you have your own dataset, you can replace the value in `-i` to the
 locations where you `.gmt` input file is.
 
 ``` {.}
-python net_sim.py -i /path/to/your/input/file.gmt
+python sample_net.py -i /path/to/your/input/file.gmt
 ```
 
 One can add the optional arguments as well. To get more information
@@ -170,7 +170,7 @@ from 10 (default) to 15 and want to increase the number of shuffling
 from 500 (default) to 1000 in the permutation test.
 
 ``` {.}
-python net_sim.py -i ./Data/Input.gmt.txt -s 1000 --n_test 15
+python sample_net.py -i ./Data/Input.gmt.txt -s 1000 --n_test 15
 ```
 
 Keep in mind that these optional arguments are not required to be
