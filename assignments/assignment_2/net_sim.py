@@ -16,13 +16,14 @@ import sys
 import argparse 
 import random
 from collections import defaultdict
+from datetime import datetime
 
 # Third party imports
 import pandas as pd 
 import numpy as np
 
 # imports from local scripts
-sys.path.append("../")
+sys.path.append("./scripts")
 import simple_path # last assigment script
 from simple_path import StringDB, parse_input
 
@@ -196,7 +197,7 @@ def permutation_test(ds1, ds2, n_shuffles=500):
 
     Limitations:
     ------------
-    - Data must be exchangable, it not, the p-values will not be robust 
+    - Data must be exchangable, if not, the p-values will not be robust 
 	- Increasing the number of shuffles will slow down the calculations. Has time complexity of O(N)
  
 	Source
@@ -322,8 +323,11 @@ if __name__ == '__main__':
                      	help="Number of shuffles done in permutations test. Default is 500",
                       	default=500)
 	parser.add_argument("-x", "--iterations", type=int, metavar="PARAM",
-                     	help="Number of sampling iterations. Default is 5000",
+                     	help="Number of sampling iterations. Default is 500",
                       	default=1000)
+	parser.add_argument("--n_test", type=int, metavar="PARAM",
+                     	help="Number of permutation test conducted",
+                      	default=10)
 	args = parser.parse_args()
 
 
@@ -342,5 +346,14 @@ if __name__ == '__main__':
 	binned_df = bin_data(gene_counts, id_gene)
 
 	# sampling
-	p_val  = sample_subnetworks(fa_input, gene_counts, binned_df, iterations=args.iterations, n_shuffles=args.shuffles)
-	print(p_val)
+	test_results = []
+	for iteration in range(args.n_test):
+		p_val  = sample_subnetworks(fa_input, gene_counts, binned_df, iterations=args.iterations, n_shuffles=args.shuffles)
+		print("Permutation test score {}: {}".format(iteration+1, p_val))
+		test_results.append([iteration, p_val])
+
+	# converting into .csv file
+	csv_outname = "pval_score_{}.csv".format(datetime.now().strftime("%m%d%y-%H%M%S"))
+	results_df = pd.DataFrame(data=test_results, columns=["test", "p_val"])
+	results_df.to_csv(csv_outname, index=False)
+	
