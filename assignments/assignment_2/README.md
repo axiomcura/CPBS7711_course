@@ -13,7 +13,7 @@
  [Results ](#results)
 
 ---
-# Net_sim.py 
+# sample_net.py 
 
 net_sim.py is a light weight script that generates random subnetworks
 from a given `.gmt` file that contains a tab delimited file format of
